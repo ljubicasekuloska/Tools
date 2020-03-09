@@ -8,11 +8,6 @@ module Tools
       @niza = []
     end
 
-    # def valid?
-    #   return false if @str.length <= 1
-
-    #   true
-    # end
     def check_length # proveruva dolzina na string, prethodno otstranuva prazni mesta
       delete_space
       return false if @str.length <= 1
@@ -55,13 +50,3 @@ module Tools
     end
   end
 end
-
-
-broj = Tools::Luhn.new('4539 1488 0343 6467')
-# puts broj.str
-# puts broj.check_onlynumbers
-# puts broj.str
-# puts broj.check_length
-# puts broj.valid
-puts "Brojot e validen: #{broj.luhn_calc}"
-
