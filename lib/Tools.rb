@@ -1,6 +1,67 @@
 require "Tools/version"
 
 module Tools
-  class Error < StandardError; end
-  # Your code goes here...
+  class Luhn
+    attr_accessor :str, :niza
+    def initialize(str)
+      @str = str
+      @niza = []
+    end
+
+    # def valid?
+    #   return false if @str.length <= 1
+
+    #   true
+    # end
+    def check_length # proveruva dolzina na string, prethodno otstranuva prazni mesta
+      delete_space
+      return false if @str.length <= 1
+
+      true
+    end
+
+    def check_onlynumbers # proveruva dali se vneseni samo broevi
+      delete_space
+      return true if str.scan(/\D/).empty?
+
+      false
+    end
+
+    def delete_space # metod koj brise prazni mesta
+      @str = str.delete(' ')
+    end
+
+    def luhn_calc # validacija dali e luhn broj spored zadadenite parametri, vrakja true, false
+      count = 1
+      if valid?
+          @niza = str.chars.reverse.map(&:to_i)
+          while count < @niza.length
+            @niza[count] = @niza[count] * 2
+            @niza[count] = @niza[count] - 9 if @niza[count] > 9
+            count += 2
+          end
+          sum = @niza.sum
+          return true if sum % 10 == 0
+
+          false
+        else return false
+      end
+    end
+
+    def valid? # metod koj proveruva dali vneseniot string e validen soglasno zadadenite paramerti
+      return true if check_length && check_onlynumbers
+
+      false
+    end
+  end
 end
+
+
+broj = Tools::Luhn.new('4539 1488 0343 6467')
+# puts broj.str
+# puts broj.check_onlynumbers
+# puts broj.str
+# puts broj.check_length
+# puts broj.valid
+puts "Brojot e validen: #{broj.luhn_calc}"
+
