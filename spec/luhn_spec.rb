@@ -3,24 +3,24 @@ RSpec.describe Tools::Luhn do
 
   it "doesn't allow single digit strings" do
     luhn_example = Tools::Luhn.new('3')
-    expect(luhn_example.valid?).to be false
+    expect(luhn_example.luhn_calc).to be false
   end
 
   it "doesn't allow an empty string" do
     luhn_example = Tools::Luhn.new('')
-    expect(luhn_example.valid?).to be false
+    expect(luhn_example.luhn_calc).to be false
   end
 
   it 'confirms that a single zero is invalid' do
     luhn_example = Tools::Luhn.new('0')
-    expect(luhn_example.valid?).to be false
+    expect(luhn_example.luhn_calc).to be false
   end
 
   it 'confirms that a simple valid sin remains valid if reversed' do
     # luhn_example = Tools::Luhn.new('059')
     # expect(luhn_example.valid?).to be true
     luhn_example = Tools::Luhn.new('950')
-    expect(luhn_example.valid?).to be true
+    expect(luhn_example.luhn_calc).to be true
   end
 
   it 'confirms that a simple valid sin becomes invalid if reversed' do
