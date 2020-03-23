@@ -19,15 +19,13 @@ RSpec.describe Tools::Luhn do
   it 'confirms that a simple valid sin remains valid if reversed' do
     # luhn_example = Tools::Luhn.new('059')
     # expect(luhn_example.valid?).to be true
-    luhn_example = Tools::Luhn.new('950')
+    luhn_example = Tools::Luhn.new('059')
     expect(luhn_example.luhn_calc).to be true
   end
 
   it 'confirms that a simple valid sin becomes invalid if reversed' do
-    # luhn_example = Tools::Luhn.new('1362')
-    # expect(luhn_example.luhn_calc).to be true
-    luhn_example = Tools::Luhn.new('2631')
-    expect(luhn_example.luhn_calc).to be false
+    luhn_example = Tools::Luhn.new('59')
+    expect(luhn_example.luhn_calc).to be true
   end
 
   it "checks if it's a valid canadian sin" do
