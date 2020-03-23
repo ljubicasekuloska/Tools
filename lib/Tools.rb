@@ -29,17 +29,17 @@ module Tools
     def luhn_calc # validacija dali e luhn broj spored zadadenite parametri, vrakja true, false
       count = 1
       if valid?
-          @niza = str.chars.reverse.map(&:to_i)
-          while count < @niza.length
-            @niza[count] = @niza[count] * 2
-            @niza[count] = @niza[count] - 9 if @niza[count] > 9
-            count += 2
-          end
-          sum = @niza.sum
-          return true if sum % 10 == 0
+        @niza = str.chars.reverse.map(&:to_i)
+        while count < @niza.length
+          @niza[count] = @niza[count] * 2
+          @niza[count] = @niza[count] - 9 if @niza[count] > 9
+          count += 2
+        end
+        sum = @niza.sum
+        return true if sum % 10 == 0
 
-          false
-        else return false
+        false
+      else false
       end
     end
 
@@ -47,6 +47,20 @@ module Tools
       return true if check_length && check_onlynumbers
 
       false
+    end
+  end
+
+  class Raindrops
+    def initialize(number)
+      @number = number
+    end
+
+    def faktor
+      out_string = ''
+      out_string += 'Pling' if (@number % 3).zero?
+      out_string += 'Plang' if (@number % 5).zero?
+      out_string += 'Plong' if (@number % 7).zero?
+      out_string.empty? ? @number.to_s : out_string
     end
   end
 end
