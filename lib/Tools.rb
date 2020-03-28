@@ -1,52 +1,43 @@
-require "Tools/version"
+# frozen_string_literal: true
+
+# require 'Tools/version'
 
 module Tools
   class Luhn
-    attr_accessor :str, :niza
     def initialize(str)
-      @str = str
-      @niza = []
+      @stripped = str.delete(' ')
     end
 
-    def check_length # proveruva dolzina na string, prethodno otstranuva prazni mesta
-      delete_space
-      return false if @str.length <= 1
+    def valid?
+      return false if @stripped.length <= 1
+      return false if /\D/.match?(@stripped)
 
-      true
+      (rest_of_the_elements + checksum).sum % 10 == 0
     end
 
-    def check_onlynumbers # proveruva dali se vneseni samo broevi
-      delete_space
-      return true if str.scan(/\D/).empty?
+    private
 
-      false
-    end
-
-    def delete_space # metod koj brise prazni mesta
-      @str = str.delete(' ')
-    end
-
-    def luhn_calc # validacija dali e luhn broj spored zadadenite parametri, vrakja true, false
-      count = 1
-      if valid?
-        @niza = str.chars.reverse.map(&:to_i)
-        while count < @niza.length
-          @niza[count] = @niza[count] * 2
-          @niza[count] = @niza[count] - 9 if @niza[count] > 9
-          count += 2
-        end
-        sum = @niza.sum
-        return true if sum % 10 == 0
-
-        false
-      else false
+    def checksum
+      every_second_digit_from_right.map do |elem|
+        double = elem * 2
+        double > 9 ? double - 9 : double
       end
     end
 
-    def valid? # metod koj proveruva dali vneseniot string e validen soglasno zadadenite paramerti
-      return true if check_length && check_onlynumbers
+    def every_second_digit_from_right
+      indexes(1).map { |i| reversed_array[i].to_i }
+    end
 
-      false
+    def rest_of_the_elements
+      indexes.map { |i| reversed_array[i].to_i }
+    end
+
+    def reversed_array
+      @stripped.reverse.chars
+    end
+
+    def indexes(inx = 0)
+      (inx..reversed_array.length - 1).step(2)
     end
   end
 
@@ -61,6 +52,48 @@ module Tools
       out_string += 'Plang' if (@number % 5).zero?
       out_string += 'Plong' if (@number % 7).zero?
       out_string.empty? ? @number.to_s : out_string
+    end
+  end
+
+  class Allergies
+    ALLERGENS = {
+      1 => 'eggs',
+      2 => 'peanuts',
+      4 => 'shellfish',
+      8 => 'strawberries',
+      16 => 'tomatoes',
+      32 => 'chocolate',
+      64 => 'pollen',
+      128 => 'cats'
+    }.freeze
+
+    def initialize(score)
+      @score = score
+      @list_all_allergies = []
+    end
+
+    def alergic_to?(allergen)
+      all_allergens
+      @list_all_allergies.include? allergen
+    end
+
+    def list_of_allergies
+      all_allergens
+      @list_all_allergies
+    end
+
+    private
+
+    def all_allergens
+      score = @score
+      score -= 256 if score >= 256
+      x = ALLERGENS.keys.reverse
+      x.each do |i|
+        if i <= score
+          score -= i
+          @list_all_allergies.push ALLERGENS[i]
+        end
+      end
     end
   end
 end
