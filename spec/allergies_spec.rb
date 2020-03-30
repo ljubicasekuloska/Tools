@@ -33,7 +33,7 @@ RSpec.describe Tools::Allergies do
     expect(allergies.list_of_allergies).to eq(%w[cats pollen chocolate tomatoes strawberries shellfish peanuts eggs])
   end
   it 'ignores allergens not listed' do
-    allergies = Tools::Allergies.new(480)
+    allergies = Tools::Allergies.new(1248)
     expect(allergies.list_of_allergies).to eq(%w[cats pollen chocolate])
   end
 end

@@ -86,7 +86,7 @@ module Tools
 
     def all_allergens
       score = @score
-      score -= 256 if score >= 256
+      score -= 256 while score >= 256
       x = ALLERGENS.keys.reverse
       x.each do |i|
         if i <= score
