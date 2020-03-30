@@ -88,12 +88,41 @@ module Tools
     end
 
     def keys
-      ALLERGENS.keys.select {|item| item <= score }.sort.reverse
+      ALLERGENS.keys.select { |item| item <= score }.sort.reverse
     end
 
     def all_allergens
       tmp = score
       keys.select { |elem| tmp >= elem && tmp -= elem }
+    end
+  end
+
+  class Resistors
+    COLORS = {
+      'Black' => 0,
+      'Brown' => 1,
+      'Red' => 2,
+      'Orange' => 3,
+      'Yellow' => 4,
+      'Green' => 5,
+      'Blue' => 6,
+      'Violet' => 7,
+      'Gray' => 8,
+      'White' => 9,
+      'Gold' => '-',
+      'Silver' => '-'
+    }.freeze
+
+    def initialize(color1, color2, color3 = 'Black')
+      @colors_array = [color1, color2, color3]
+    end
+
+    def match_input
+      @colors_array.map { |key| COLORS[key] }
+    end
+
+    def output
+      (0..match_input.size - 2).map { |i| match_input[i] }.join.to_i
     end
   end
 end
