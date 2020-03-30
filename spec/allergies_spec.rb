@@ -18,6 +18,7 @@ RSpec.describe Tools::Allergies do
       expect(allergies.alergic_to?('peanuts')).to be true
     end
   end
+
   it "tests that a person doesn't have allergies" do
     allergies = Tools::Allergies.new(0)
     expect(allergies.list_of_allergies).to be_empty
@@ -35,5 +36,10 @@ RSpec.describe Tools::Allergies do
   it 'ignores allergens not listed' do
     allergies = Tools::Allergies.new(1248)
     expect(allergies.list_of_allergies).to eq(%w[cats pollen chocolate])
+  end
+
+  it 'ignores allergens not listed' do
+    allergies = Tools::Allergies.new(1024)
+    expect(allergies.list_of_allergies).to eq(%w[])
   end
 end

@@ -56,6 +56,7 @@ module Tools
   end
 
   class Allergies
+    LIMIT = 512
     ALLERGENS = {
       1 => 'eggs',
       2 => 'peanuts',
@@ -69,31 +70,30 @@ module Tools
 
     def initialize(score)
       @score = score
-      @list_all_allergies = []
     end
 
     def alergic_to?(allergen)
-      all_allergens
-      @list_all_allergies.include? allergen
+      list_of_allergies.include? allergen
     end
 
     def list_of_allergies
-      all_allergens
-      @list_all_allergies
+      all_allergens.map { |key| ALLERGENS[key] }
     end
 
     private
 
+    def score
+      @score -= LIMIT while @score >= LIMIT
+      @score
+    end
+
+    def keys
+      ALLERGENS.keys.select {|item| item <= score }.sort.reverse
+    end
+
     def all_allergens
-      score = @score
-      score -= 256 while score >= 256
-      x = ALLERGENS.keys.reverse
-      x.each do |i|
-        if i <= score
-          score -= i
-          @list_all_allergies.push ALLERGENS[i]
-        end
-      end
+      tmp = score
+      keys.select { |elem| tmp >= elem && tmp -= elem }
     end
   end
 end
