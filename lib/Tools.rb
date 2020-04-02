@@ -99,30 +99,90 @@ module Tools
 
   class Resistors
     COLORS = {
-      'Black' => 0,
-      'Brown' => 1,
-      'Red' => 2,
-      'Orange' => 3,
-      'Yellow' => 4,
-      'Green' => 5,
-      'Blue' => 6,
-      'Violet' => 7,
-      'Gray' => 8,
-      'White' => 9,
-      'Gold' => '-',
-      'Silver' => '-'
+      black: {
+        color: 0,
+        multiplier: 1,
+        tolerance: 20
+      },
+      brown: {
+        color: 1,
+        multiplier: 10,
+        tolerance: 1
+      },
+      red: {
+        color: 2,
+        multiplier: 100,
+        tolerance: 2
+      },
+      orange: {
+        color: 3,
+        multiplier: 1000,
+        tolerance: 0.2
+      },
+      yellow: {
+        color: 4,
+        multiplier: 10_000,
+        tolerance: 0.05
+      },
+      green: {
+        color: 5,
+        multiplier: 100_000,
+        tolerance: 0.5
+      },
+      blue: {
+        color: 6,
+        multiplier: 1_000_000,
+        tolerance: 0.25
+      },
+      violet: {
+        color: 7,
+        multiplier: 10_000_000,
+        tolerance: 0.10
+      },
+      gray: {
+        color: 8,
+        multiplier: 100_000_000,
+        tolerance: 0.05
+      },
+      white: {
+        color: 9,
+        multiplier: 1_000_000_000,
+        tolerance: 10
+      },
+      gold: {
+        multiplier: 0.1,
+        tolerance: 5
+      },
+      silver: {
+        multiplier: 0.01,
+        tolerance: 10
+      }
     }.freeze
 
-    def initialize(color1, color2, color3 = 'Black')
-      @colors_array = [color1, color2, color3]
+    def initialize(colors)
+      @color1, @color2, @multiplier, @tolerance = colors
     end
 
-    def match_input
-      @colors_array.map { |key| COLORS[key] }
+    def base
+      color(@color1) * 10 + color(@color2)
     end
 
-    def output
-      (0..match_input.size - 2).map { |i| match_input[i] }.join.to_i
+    def specification
+      "#{base * multiplier} ohms +/- #{tolerance}%"
+    end
+
+    private
+
+    def multiplier
+      COLORS[@multiplier.downcase.to_sym][:multiplier]
+    end
+
+    def tolerance
+      @tolerance.nil? ? 20 : COLORS[@tolerance.downcase.to_sym][:tolerance]
+    end
+
+    def color(color_key)
+      COLORS[color_key.downcase.to_sym][:color]
     end
   end
 end
